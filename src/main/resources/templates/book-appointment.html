@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Book Appointment - Medisync360</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+  <style>
+
+    body {
+
+      background-color: #e3f2fd;
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    }
+
+    .navbar {
+
+      background-color: #003366;
+
+    }
+
+    .navbar-brand {
+
+      font-size: 1.7rem;
+
+      font-weight: bold;
+
+      color: #ffffff !important;
+
+    }
+
+    .container {
+
+      max-width: 900px;
+
+      background: white;
+
+      padding: 30px;
+
+      border-radius: 10px;
+
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+
+      margin-top: 40px;
+
+    }
+
+    h2 {
+
+      color: #003366;
+
+      font-weight: bold;
+
+      text-align: center;
+
+      margin-bottom: 30px;
+
+    }
+
+    .table thead {
+
+      background-color: #003366;
+
+      color: white;
+
+    }
+
+    .btn-book {
+
+      background-color: #0056b3;
+
+      border-color: #0056b3;
+
+      color: white;
+
+      font-weight: bold;
+
+    }
+
+    .btn-book:hover {
+
+      background-color: #004494;
+
+    }
+
+    .btn-dashboard {
+
+      background-color: #003366;
+
+      border-color: #003366;
+
+      color: white;
+
+      font-weight: bold;
+
+      display: block;
+
+      width: 100%;
+
+      margin-top: 20px;
+
+    }
+
+    .btn-dashboard:hover {
+
+      background-color: #002855;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-dark">
+
+    <div class="container">
+
+      <a class="navbar-brand" href="#">Medisync360</a>
+
+    </div>
+
+  </nav>
+
+  <div class="container">
+
+    <h2>Book an Appointment</h2>
+
+    <div class="table-responsive">
+
+      <table class="table table-bordered table-striped mt-3">
+
+        <thead>
+
+          <tr>
+
+            <th>Doctor Name</th>
+
+            <th>Specialty</th>
+
+            <th>Start Time</th>
+
+            <th>End Time</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr th:each="slot : ${availableSlots}">
+
+            <td th:text="${slot.doctorName}"></td>
+
+            <td th:text="${slot.doctorSpeciality}"></td>
+
+            <td th:text="${slot.startTime}"></td>
+
+            <td th:text="${slot.endTime}"></td>
+
+            <td>
+
+              <form th:action="@{/appointments/book}" method="post">
+
+                <input type="hidden" name="slotId" th:value="${slot.id}">
+
+                <input type="hidden" name="doctorId" th:value="${slot.doctor.id}">
+
+                <input type="hidden" name="patientId" th:value="${loggedInPatientId}">
+
+                <button type="submit" class="btn btn-book">Book</button>
+
+              </form>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <a href="/patient" class="btn btn-dashboard">Back to Dashboard</a>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
