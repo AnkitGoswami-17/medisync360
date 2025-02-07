@@ -169,7 +169,7 @@ public class DoctorDashBoardController {
 		Slot slot = appointment.getSlot();
 		
 		if (slot != null) {
-			slot.setState("report submited");
+			slot.setState("reportsubmited");
 			slotRepository.save(slot);
 		}
 
@@ -210,7 +210,7 @@ public class DoctorDashBoardController {
 
 	    for (Slot slot : allSlots) {
 
-	      if ("reportsubmitted".equalsIgnoreCase(slot.getState())) {
+	      if ("reportsubmited".equalsIgnoreCase(slot.getState())) {
 
 	        // Fetch appointment using slot ID
 	    	  appointmentsForUpdate.add(slot);
