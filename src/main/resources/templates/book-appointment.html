@@ -133,6 +133,10 @@
   </nav>
 
   <div class="container">
+  
+  <div th:if="${successMessage}" class="alert alert-success text-center" role="alert">
+  			<strong th:text="${successMessage}"></strong>
+  		</div>
 
     <h2>Book an Appointment</h2>
 

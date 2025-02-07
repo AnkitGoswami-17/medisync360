@@ -31,7 +31,8 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    return http.csrf().disable()
 	        .authorizeHttpRequests(auth -> auth
-	            .requestMatchers("/api/patients/register", "/api/doctor/register", "/auth**","/auth/register","/home").permitAll()
+	        		.requestMatchers("/images/**").permitAll()
+	            .requestMatchers("/api/patients/register", "/api/doctor/register", "/auth**","/auth/register","/home","/contact","/about").permitAll()
 	            .requestMatchers("/api/patients/**").hasRole("PATIENT")
 	            .requestMatchers("/api/doctors/**").hasRole("DOCTOR")
 	            .requestMatchers("/api/medicalrecords/create", "/api/medicalrecords/update").hasRole("DOCTOR")

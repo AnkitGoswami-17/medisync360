@@ -113,6 +113,10 @@
   <div class="container">
 
     <h2>Update Profile</h2>
+    
+    <div th:if="${successMessage}" class="alert alert-success text-center" role="alert">
+  			<strong th:text="${successMessage}"></strong>
+  		</div>
 
     <form action="/patient/update-profile" method="post" th:object="${patient}">
 

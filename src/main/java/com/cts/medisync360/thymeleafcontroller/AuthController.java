@@ -91,6 +91,7 @@ public class AuthController {
 	    patientDto.setAddress(registrationDto.getAddress());
 	    patientDto.setContactNo(registrationDto.getContactNo());
 //	    patientDto.setDob(registrationDto.getDob());
+	    patientDto.setAge(registrationDto.getAge());
 	    patientDto.setGender(registrationDto.getGender());
 	    patientDto.setEmail(registrationDto.getEmail());
 

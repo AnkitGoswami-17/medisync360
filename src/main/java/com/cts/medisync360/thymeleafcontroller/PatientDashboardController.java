@@ -68,7 +68,7 @@ public class PatientDashboardController {
 
 			@RequestParam("doctorId") Long doctorId,
 
-			@RequestParam("patientId") Long patientId) {
+			@RequestParam("patientId") Long patientId,RedirectAttributes redirectAttributes) {
 
 		AppointmentDto appointmentDto = new AppointmentDto();
 
@@ -79,8 +79,10 @@ public class PatientDashboardController {
 		appointmentDto.setPatientId(patientId);
 
 		appointmentService.bookAppointment(appointmentDto);
+		
+		redirectAttributes.addFlashAttribute("successMessage","Appointment booked successfully!");
 
-		return "redirect:/appointments/book?success";
+		return "redirect:/appointments/book";
 
 	}
 
@@ -149,13 +151,15 @@ public class PatientDashboardController {
 
 	  @PostMapping("/patient/update-profile")
 
-	  public String updateProfile(@ModelAttribute("patient") PatientDto updatedPatient,Principal principal) {
+	  public String updateProfile(@ModelAttribute("patient") PatientDto updatedPatient,Principal principal,RedirectAttributes redirectAttributes) {
 
 		 long patientId = patientService.getPatientIdByUsername(principal.getName());
 
 	    patientService.updatePatient(patientId, updatedPatient);
+	    
+	    redirectAttributes.addFlashAttribute("successMessage","Profile Updated Successfully!");
 
-	    return "redirect:/patient";
+	    return "redirect:/patient/update-profile";
 
 	  }
 	  
