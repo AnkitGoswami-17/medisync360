@@ -102,20 +102,35 @@ public class DoctorDashBoardController {
 	// Complete Appointment
 
 	@PostMapping("/doctor/completeappointment")
-
 	public String completeAppointment(@RequestParam("slotId") long slotId, RedirectAttributes redirectAttributes) {
+	    try {
+	        List<Appointment> appointments = appointmentRepository.findBySlotId(slotId);
+	        
+	        long appId = 0;
+	        
+	        for (Appointment appointment : appointments) {
+	        	
+	        	if (appointment == null) {
+	 	            throw new RuntimeException("Appointment not found for slotId: " + slotId);
+	 	        }
+	        	
+	        	if (appointment.getStatus().equals("BOOKED")) {
+	        		
+	        		appId = appointment.getAppointmentId();
+	        	}
+	        	 
+	        }
 
-		Appointment appointment = appointmentRepository.findBySlotId(slotId);
+	        appointmentService.markAppointmentAsCompleted(appId);
 
-		long appId = appointment.getAppointmentId();
+	        redirectAttributes.addFlashAttribute("completedSlotId", slotId);
+	        redirectAttributes.addFlashAttribute("success", "Appointment completed successfully.");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("error", "Failed to complete appointment: " + e.getMessage());
+	        return "redirect:/doctor/error";
+	    }
 
-		appointmentService.markAppointmentAsCompleted(appId);
-
-		redirectAttributes.addFlashAttribute("completedSlotId", slotId);
-
-		redirectAttributes.addFlashAttribute("success", "Appointment completed successfully.");
-
-		return "redirect:/doctor/createreport";
+	    return "redirect:/doctor/createreport";
 	}
 
 	@GetMapping("/doctor/writereport")
@@ -150,9 +165,27 @@ public class DoctorDashBoardController {
 
 			@RequestParam("report") String report, RedirectAttributes redirectAttributes) {
 
-		Appointment appointment = appointmentRepository.findBySlotId(appointmentId);
+		List<Appointment> appointments = appointmentRepository.findBySlotId(appointmentId);
+        
+        long appId = 0;
+        
+        for (Appointment appointment : appointments) {
+        	
+        	if (appointment == null) {
+ 	            throw new RuntimeException("Appointment not found for slotId: " + appointmentId);
+ 	        }
+        	
+        	if (appointment.getStatus().equals("COMPLETED")) {
+        		
+        		appId = appointment.getAppointmentId();
+        	}
+        }
 
-		long appId = appointment.getAppointmentId();
+/*		long appId = appointment.getAppointmentId();*/
+        
+        Appointment appointment = appointmentRepository.findById(appId).orElseThrow(
+        		()->new RuntimeException("Appointment not found")
+        		);
 
 		CreateMedicalRecordDto createDto = new CreateMedicalRecordDto();
 

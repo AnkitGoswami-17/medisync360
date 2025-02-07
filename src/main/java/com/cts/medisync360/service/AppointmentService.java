@@ -76,10 +76,15 @@ public class AppointmentService {
 		return appointmentRepository.save(appointment);
 	}
 	
-	public void markAppointmentAsCompleted(Long appointmentId) {
+	public void markAppointmentAsCompleted(Long appointmentId) throws Exception {
 		Appointment appointment = appointmentRepository.findById(appointmentId).orElseThrow(
 				()-> new RuntimeException("Appointment not found"));
+		String status = appointment.getStatus();
+		if("BOOKED".equals(status)) {
 		appointment.setStatus("COMPLETED");
+		} else {
+			throw new IllegalStateException("Appointment status is not BOOKED");
+		}
 		appointmentRepository.save(appointment);
 	}
 
